@@ -27,7 +27,6 @@ func (lb *LimitedBuffer) Read(p []byte) (n int, err error) {
 // Write implements the io.Writer interface.
 func (lb *LimitedBuffer) Write(p []byte) (n int, err error) {
 	if lb.buf.Len() >= lb.size {
-		// 無視
 		return 0, nil
 	}
 
