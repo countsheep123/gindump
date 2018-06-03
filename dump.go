@@ -68,15 +68,15 @@ const (
 	keyResponse = "key_dumped_response"
 )
 
-func Dump() gin.HandlerFunc {
+func Dump(maxReqRespSize int) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// request
-		reqBody := new(bytes.Buffer)
+		reqBody := NewLimitedBuffer(maxReqRespSize)
 		r := io.TeeReader(c.Request.Body, reqBody)
 		c.Request.Body = ioutil.NopCloser(r)
 
 		// response
-		resBody := new(bytes.Buffer)
+		resBody := NewLimitedBuffer(maxReqRespSize)
 		w := &responseWriter{
 			dumpWriter:     resBody,
 			ResponseWriter: c.Writer,
